@@ -1,2 +1,7 @@
+# API
 fastapi
 uvicorn[standard]
+
+# LLM & RAG
+openai
+pymilvus
