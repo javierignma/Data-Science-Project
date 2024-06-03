@@ -5,4 +5,4 @@ uvicorn[standard]
 # LLM & RAG
 openai
 pymilvus
-sentence_transformers
+sentence-transformers
