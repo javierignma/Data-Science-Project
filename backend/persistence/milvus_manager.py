@@ -4,10 +4,12 @@ from typing import List
 
 class MilvusManager:
     collection: Collection
+    metric_type: str
 
-    def __init__(self, collection_name):
+    def __init__(self, collection_name: str, metric_type: str):
         self._connect_to_milvus()
-        self.create_collection(collection_name)
+        self.metric_type = metric_type
+        self.create_collection(collection_name, self.metric_type)
 
     def _connect_to_milvus(self):
         try:
@@ -16,10 +18,14 @@ class MilvusManager:
         except Exception as e:
             print(f"Error trying to connecting to Milvus: {e}")
 
-    def create_collection(self, name: str) -> None:
+    def create_collection(self, name: str, metric_type: str) -> None:
         '''
         Creates a new collection using name parameter as collection's name and select it as current collection.
         If the name is already used, then select the collection with that name.
+        Metric types:
+        - "L2"
+        - "IP"
+        - "JACCARD"
         '''
 
         if utility.has_collection(name):
@@ -28,21 +34,20 @@ class MilvusManager:
             return
         
         fields = [
-            FieldSchema(name="id", dtype=DataType.INT64, is_primary=True, auto_id=True),
+            FieldSchema(name="doc_name", dtype=DataType.VARCHAR, max_length=200, is_primary=True),
             FieldSchema(name="embedding", dtype=DataType.FLOAT_VECTOR, dim=384),
-            FieldSchema(name="plain_text", dtype=DataType.VARCHAR, max_length=500),
-            FieldSchema(name="doc_name", dtype=DataType.VARCHAR, max_length=100)
+            FieldSchema(name="link_ref", dtype=DataType.VARCHAR, max_length=500)
         ]
         description = f"{name}'s collection."
-        schema = CollectionSchema(fields, description, auto_id=True)
+        schema = CollectionSchema(fields, description)
         collection = Collection(name, schema)
         self.collection = collection
 
         index_params = {
             "index_type": "IVF_FLAT",
-            "metric_type": "L2",
+            "metric_type": metric_type,
             "params": {
-                "nlist": 128
+                "nlist": 4096
             }
         }
         collection.create_index(field_name='embedding', index_params=index_params)
@@ -57,25 +62,24 @@ class MilvusManager:
         else:
             print(f"Collection '{name}' does not exist.")
     
-    def insert_data(self, plain_text: str, doc_name: str) -> None:
+    def insert_data(self, data: List[dict]) -> None:
         '''
-        Insert a new document in the current collection.
+        Insert new documents in the current collection.
         '''
-        texts = split_string(plain_text)
 
-        for text in texts:
-            data = {
-                "embedding": get_embeddings(text),
-                "plain_text": text,
-                "doc_name": doc_name
+        for row in data:
+            row = {
+                "doc_name": row["doc_name"],
+                "embedding": get_embeddings(row["content"]),
+                "link_ref": row["link_ref"]
             }
-            insertion_result = self.collection.insert(data)
+            insertion_result = self.collection.insert(row)
             if insertion_result.insert_count:
-                print("Row inserted.")
+                print(f"{row["doc_name"]} inserted in {self.collection.name}.")
             else:
-                print("Row could not be inserted.")
+                print(f"{row["doc_name"]} could not be inserted in {self.collection.name}.")
             self.collection.flush()
-        
+            
         self.collection.load()
     
     def delete_data(self, doc_name: str):
@@ -93,7 +97,7 @@ class MilvusManager:
         self.collection.drop()
         print(f"Collection '{collection_name}' has been deleted.")
     
-    def search_collection(self, query: str, doc_name: str,top_k=3) -> List[str]:
+    def search_collection(self, query: str, top_k=10) -> List[dict]:
         '''
         Gives the top_k texts that are most related to the given query.
         '''
@@ -103,12 +107,11 @@ class MilvusManager:
             "data": [query_embedding],
             "anns_field": "embedding",
             "param": {
-                "metric_type": "L2",
-                "params": {"nprobe": 10}
+                "metric_type": self.metric_type,
+                "params": {"nprobe": 128}
             },
             "limit": top_k,
-            "expr": f'doc_name == "{doc_name}"',
-            "output_fields": ["plain_text"]
+            "output_fields": ["doc_name", "link_ref"]
         }
 
         results = self.collection.search(**search_param)
@@ -116,6 +119,12 @@ class MilvusManager:
         retrieved_texts = []
         for result in results:
             for hit in result:
-                retrieved_texts.append(hit.entity.get('plain_text'))
+                similarity_percentage = round((1 + hit.distance) / 2 * 100, 2)
+                row = {
+                    "doc_name": hit.entity.get('doc_name'),
+                    "link_ref": hit.entity.get('link_ref'),
+                    "similarity_percentage": similarity_percentage
+                }
+                retrieved_texts.append(row)
         
         return retrieved_texts
