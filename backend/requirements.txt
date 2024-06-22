@@ -8,3 +8,6 @@ python-dotenv
 pymilvus
 sentence-transformers
 PyMuPDF
+
+# LOAD ENVS
+python-dotenv

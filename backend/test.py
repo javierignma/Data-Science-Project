@@ -3,7 +3,7 @@ from services.doc_to_text import describe_doc
 
 prefix = "documents/Criptografia/"
 
-milvus_manager = MilvusManager("Criptografia_Prompt03", "IP")
+milvus_manager = MilvusManager("Criptografia", "COSINE")
 
 documents = [
     {
@@ -69,3 +69,4 @@ documents = [
 ]
 
 milvus_manager.insert_data(documents)
+

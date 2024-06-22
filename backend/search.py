@@ -1,6 +1,6 @@
 from persistence.milvus_manager import MilvusManager
 
-milvus_manager = MilvusManager("Criptografia_Prompt03", "IP")
+milvus_manager = MilvusManager("Criptografia", "COSINE")
 
 response = milvus_manager.search_collection(
     input("Busca algún documento.")

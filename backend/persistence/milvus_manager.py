@@ -1,6 +1,8 @@
 from pymilvus import connections, CollectionSchema, Collection, FieldSchema, utility, DataType
 from services.embedding import get_embeddings, split_string
 from typing import List
+from dotenv import load_dotenv
+import os
 
 class MilvusManager:
     collection: Collection
@@ -12,8 +14,11 @@ class MilvusManager:
         self.create_collection(collection_name, self.metric_type)
 
     def _connect_to_milvus(self):
+        load_dotenv()
         try:
-            connections.connect("default", host="localhost", port="19530")
+            URI = os.getenv("ZILLIZ_URI")
+            TOKEN = os.getenv("ZILLIZ_TOKEN")
+            connections.connect("default", uri=URI, token=TOKEN)
             print("Connected to Milvus.")
         except Exception as e:
             print(f"Error trying to connecting to Milvus: {e}")
