@@ -97,7 +97,7 @@ class MilvusManager:
         self.collection.drop()
         print(f"Collection '{collection_name}' has been deleted.")
     
-    def search_collection(self, query: str, top_k=10) -> List[dict]:
+    def search_collection(self, query: str, top_k=30) -> List[dict]:
         '''
         Gives the top_k texts that are most related to the given query.
         '''
