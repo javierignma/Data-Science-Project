@@ -1,5 +1,5 @@
 from pymilvus import connections, CollectionSchema, Collection, FieldSchema, utility, DataType
-from services.embedding import get_embeddings, split_string
+from services.embedding import get_embeddings
 from typing import List
 from dotenv import load_dotenv
 import os
