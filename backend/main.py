@@ -1,13 +1,13 @@
-from typing import List
+from typing import List, Dict
 from persistence.milvus_manager import MilvusManager
-from fastapi import FastAPI, File, UploadFile, Form
-from pydantic import BaseModel
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 app = FastAPI()
 
 origins = [
-    "http://localhost:3001", "http://localhost:3000"
+    "http://localhost:3001", "http://localhost:3000",
 ]
 
 app.add_middleware(
@@ -21,9 +21,12 @@ app.add_middleware(
 class Query(BaseModel):
     text: str
 
+class QueryResponse(BaseModel):
+    results: List[Dict]
+
 @app.post("/api/v1/{subject}/browse/")
-def get_questions(subject: str, query: Query):
+def get_questions(subject: str, query: Query) -> QueryResponse:
     milvus_manager = MilvusManager(collection_name=subject, metric_type="COSINE")
     browse_results = milvus_manager.search_collection(query.text)
-    print(browse_results)
-    return {"results": browse_results}
+    browse_results = QueryResponse(results=browse_results)
+    return browse_results

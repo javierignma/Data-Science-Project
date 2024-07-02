@@ -1,5 +1,5 @@
 from pymilvus import connections, CollectionSchema, Collection, FieldSchema, utility, DataType
-from services.embedding import get_embeddings, split_string
+from services.embedding import get_embeddings
 from typing import List
 from dotenv import load_dotenv
 import os
@@ -80,9 +80,9 @@ class MilvusManager:
             }
             insertion_result = self.collection.insert(row)
             if insertion_result.insert_count:
-                print(f"{row["doc_name"]} inserted in {self.collection.name}.")
+                print(f"{row['doc_name']} inserted in {self.collection.name}.")
             else:
-                print(f"{row["doc_name"]} could not be inserted in {self.collection.name}.")
+                print(f"{row['doc_name']} could not be inserted in {self.collection.name}.")
             self.collection.flush()
             
         self.collection.load()
