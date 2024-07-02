@@ -11,7 +11,7 @@ You have to write the commands with backend as root folder!!!
 3. Install the modules writing on terminal: <br>
 `pip install -r requirements.txt`
 4. Run server writing on terminal:<br>
-`uvicorn main:app --host 0.0.0.0 --port 3000 --reload`
+`c`
 
 ## Extra
 - If you are getting an execution policy error on Windows when trying to enter into virtual environment, then open Powershell with the "Run as Administrator" option. Paste on Powershell: `set-executionpolicy remotesigned` <br>

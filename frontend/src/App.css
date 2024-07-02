@@ -1,0 +1,111 @@
+/* App.css */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #F5F5F5; /* Gris Claro */
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #FFFFFF; /* Blanco */
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  text-align: center; /* Centrar el contenido */
+}
+
+h1 {
+  text-align: center;
+  color: #007BFF; /* Azul Oscuro */
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 .logo {
+  margin-right: 10px;
+  width: 50px; /* Ajusta el tamaño del logo según sea necesario */
+  height: auto;
+}
+
+
+.full-width {
+  width: 30%; /* Ajustar el ancho */
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none; /* Eliminar el borde */
+  border-radius: 5px;
+  font-size: 16px;
+  display: inline-block; /* Asegurar que el elemento sea inline para centrado */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Añadir un ligero sombreado para el efecto */
+}
+.full-width2 {
+  width: 70%; /* Ajustar el ancho */
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none; /* Eliminar el borde */
+  border-radius: 5px;
+  font-size: 16px;
+  display: inline-block; /* Asegurar que el elemento sea inline para centrado */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Añadir un ligero sombreado para el efecto */
+}
+
+.button-35 {
+  width: 20%;
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #FFFFFF; /* Blanco */
+  background-color: #007BFF; /* Azul Principal */
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px; /* Agregar espacio superior */
+}
+
+.button-35:hover {
+  background-color: #0056B3; /* Azul Oscuro */
+}
+
+.button-35:active {
+  background-color: #0056B3; /* Azul Oscuro */
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+ul.holi {
+  list-style: none;
+  padding: 0;
+}
+
+ul.holi li {
+  margin: 10px 0;
+  background: #E3F2FD; /* Azul Claro */
+  padding: 10px;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+ul.holi li:hover {
+  background: #ddd; /* Mantener este color para el hover */
+}
+
+ul.holi li a {
+  text-decoration: none;
+  color: #007BFF; /* Azul Principal */
+  font-weight: bold;
+}
+
+ul.holi li a:hover {
+  text-decoration: underline;
+}
+
+ul.holi li span {
+  color: #333333; /* Gris Oscuro */
+}

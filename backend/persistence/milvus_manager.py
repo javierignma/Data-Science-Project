@@ -16,8 +16,8 @@ class MilvusManager:
     def _connect_to_milvus(self):
         load_dotenv()
         try:
-            URI = os.getenv("ZILLIZ_URI")
-            TOKEN = os.getenv("ZILLIZ_TOKEN")
+            URI="https://in03-e2ca0c417318444.api.gcp-us-west1.zillizcloud.com"
+            TOKEN="dbfa8ac0b75db6d61ce2e3538c87d51c439d636ce8e509bce6423a1c28bb1e505770455b3a5f08541d1193793b64d41afe78745c"
             connections.connect("default", uri=URI, token=TOKEN)
             print("Connected to Milvus.")
         except Exception as e:
