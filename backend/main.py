@@ -7,7 +7,7 @@ from pydantic import BaseModel
 app = FastAPI()
 
 origins = [
-    "http://se-front:3000"
+    "https://se-front:3000"
 ]
 
 app.add_middleware(
