@@ -27,6 +27,7 @@ function App() {
     try {
       setCurrentResults([])
       console.log('{"text": "'+subject+'"}')
+      console.log(process.env.REACT_APP_API_URL)
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/${subject}/browse`,
         {
           method: 'POST',
