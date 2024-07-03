@@ -27,7 +27,7 @@ function App() {
     try {
       setCurrentResults([])
       console.log('{"text": "'+subject+'"}')
-      const response = await fetch('https://se-back:3001/api/v1/'+subject+'/browse',
+      const response = await fetch('http://se-back:3001/api/v1/'+subject+'/browse',
         {
           method: 'POST',
           headers: {
