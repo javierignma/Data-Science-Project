@@ -6,6 +6,7 @@ import logo from './logo.png'
 function App() {
   const [currentResults, setCurrentResults] = useState([])
   const [browserValue, setBrowserValue] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const [subject, setSubject] = useState('Criptografia') // Estado para el ramo seleccionado
 
   const handleBrowserChange = (event) => {
@@ -21,6 +22,7 @@ function App() {
   }
 
   const fetchData = async (subject) => {
+    setIsLoading(true)
     console.log(browserValue)
     try {
       setCurrentResults([])
@@ -35,6 +37,7 @@ function App() {
         }
       )
       if (!response.ok) {
+        setIsLoading(false)
         throw new Error(response)
       }
       const data = await response.json()
@@ -48,8 +51,10 @@ function App() {
         rows.push(row)
       }
       setCurrentResults(rows)
+      setIsLoading(false)
     }
     catch (error) {
+      setIsLoading(false)
       console.log(error)
     }
   }
@@ -69,7 +74,7 @@ function App() {
       <button className='button-35' onClick={clicker}>Buscar</button>
       <ul className='holi'>
         {
-          currentResults.map(result => (
+          isLoading ? <p>Buscando documentos...</p> : currentResults.map(result => (
             <li key={result.link_ref}>
               <a href={result.link_ref} target="_blank" rel="noopener noreferrer">{result.doc_name}</a> | {result.similarity_percentage}%
             </li>
