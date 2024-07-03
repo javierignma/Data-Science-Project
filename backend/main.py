@@ -7,7 +7,9 @@ from pydantic import BaseModel
 app = FastAPI()
 
 origins = [
-    "https://se-front:3000"
+    "http://localhost:3000",
+    "http://se-front:3000",
+    "https://soloestudio.up.railway.app"
 ]
 
 app.add_middleware(
