@@ -27,7 +27,7 @@ function App() {
     try {
       setCurrentResults([])
       console.log('{"text": "'+subject+'"}')
-      const response = await fetch('https://se-backend.up.railway.app/api/v1/'+subject+'/browse',
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/${subject}/browse`,
         {
           method: 'POST',
           headers: {
